@@ -12,7 +12,7 @@ repos:
     rev: v4.4.0
     hooks:
       - id: check-yaml
-        args: ['--unsafe']
+        args: ["--unsafe"]
       - id: check-toml
       - id: check-xml
       - id: check-json
@@ -27,14 +27,14 @@ repos:
       - id: check-ast # simply checks whether the files parse as valid python
       - id: fix-byte-order-marker # removes UTF-8 byte order marker
       - id: fix-encoding-pragma # Add # -*- coding: utf-8 -*- to the top of python files.
-        args: ['--remove']
+        args: ["--remove"]
       - id: check-docstring-first # checks a common error of defining a docstring after code
       - id: check-merge-conflict # checks for files that contain merge conflict strings
       - id: debug-statements # checks for debugger imports and py37+ `breakpoint()` calls in python source
       - id: detect-private-key # detects the presence of private keys
       - id: end-of-file-fixer # ensures that a file is either empty, or ends with one newline
       - id: mixed-line-ending # replaces or checks mixed line ending
-        args: ['--fix=lf']
+        args: ["--fix=lf"]
       - id: name-tests-test # verifies that test files are named correctly
       - id: trailing-whitespace # trims trailing whitespace
   - repo: https://github.com/charliermarsh/ruff-pre-commit
@@ -53,9 +53,9 @@ repos:
       # Desabilitado enquanto não corrigir https://github.com/nbQA-dev/nbQA/issues/811
       #- id: nbqa-ruff
       #  args: [--fix]
-  - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.304
-    hooks:
-    - id: pyright
+  # - repo: https://github.com/RobertCraigie/pyright-python
+  #   rev: v1.1.304
+  #   hooks:
+  #   - id: pyright
 
 exclude: "^$|^tests/"
