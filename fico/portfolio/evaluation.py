@@ -1,25 +1,22 @@
 """This module contains functions to evaluate the performance of the algorithm.
 
-Functions
+functions:
 ---------
+
 generate_signals
-    Generating signals dataframe, Where it simulates a portfolio with
-        an arbitrary start capital and a fixed number of shares traded each operation.
+Generating signals dataframe, Where it simulates a portfolio with
+an arbitrary start capital and a fixed number of shares traded each operation.
 algo_evaluation:
-    Perform a quantitative analysis of the algorithm performance.
-
+Perform a quantitative analysis of the algorithm performance.
 underlying_evaluation:
-    Perform a quantitative analysis of the underlying performance.
-
+Perform a quantitative analysis of the underlying performance.
 algo_vs_underlying:
-    Perform a quantitative analysis of the algorithm performance
-        versus the underlying performance.
-
+Perform a quantitative analysis of the algorithm performance
+versus the underlying performance.
 trade_evaluation:
-    Perform a quantitative analysis of the trades.
-
+Perform a quantitative analysis of the trades.
 underlying_returns:
-    Perform a quantitative analysis of the underlying returns.
+Perform a quantitative analysis of the underlying returns.
 """
 import numpy as np
 import pandas as pd
@@ -30,7 +27,7 @@ def generate_signals(input_df, start_capital=100000, share_count=2000):
     """input: dataframe, int(optional), int(optional).
 
     Generating signals dataframe, Where it simulates a portfolio with
-      an arbitrary start capital and a fixed number of shares traded each operation.
+    an arbitrary start capital and a fixed number of shares traded each operation.
     output: dataframe.
     """
     # Set initial capital:
@@ -41,8 +38,8 @@ def generate_signals(input_df, start_capital=100000, share_count=2000):
     # Set the share size:
     share_size = share_count
 
-    # Take a 500 share position where the Buy Signal is 1 (prior day's
-    #  predictions greater than prior day's returns):
+    # Take a 500 share position where the Buy Signal is 1
+    # (prior day's predictions greater than prior day's returns):
     signals_df["Position"] = share_size * signals_df["Buy Signal"]
 
     # Make Entry / Exit Column:
@@ -56,15 +53,15 @@ def generate_signals(input_df, start_capital=100000, share_count=2000):
         signals_df["Close"] * signals_df["Entry/Exit Position"].cumsum()
     )
 
-    # Subtract the initial capital by the portfolio holdings to get the
-    #  amount of liquid cash in the portfolio:
+    # Subtract the initial capital by the portfolio holdings to get the amount of
+    # liquid cash in the portfolio:
     signals_df["Portfolio Cash"] = (
         initial_capital
         - (signals_df["Close"] * signals_df["Entry/Exit Position"]).cumsum()
     )
 
-    # Get the total portfolio value by adding the cash amount by
-    #  the portfolio holdings (or investments):
+    # Get the total portfolio value by adding the cash amount by the portfolio holdings
+    # (or investments):
     signals_df["Portfolio Total"] = (
         signals_df["Portfolio Cash"] + signals_df["Portfolio Holdings"]
     )
@@ -77,7 +74,7 @@ def generate_signals(input_df, start_capital=100000, share_count=2000):
         1 + signals_df["Portfolio Daily Returns"]
     ).cumprod() - 1
 
-    signals_df = signals_df.dropna()
+    # signals_df = signals_df.dropna()
 
     return signals_df
 
@@ -86,7 +83,6 @@ def algo_evaluation(signals_df):
     """input: dataframe.
 
     Perform a quantitative analysis of the algorithm performance.
-
     output: dataframe.
     """
     # Prepare dataframe for metrics
@@ -143,12 +139,13 @@ def underlying_evaluation(signals_df):
     """input: dataframe.
 
     Perform a quantitative analysis of the underlying asset performance.
-
-    output: dataframe
+    output: dataframe.
     """
     underlying = pd.DataFrame()
     underlying["Close"] = signals_df["Close"]
-    underlying["Portfolio Daily Returns"] = underlying["Close"].pct_change()
+    # underlying["Portfolio Daily Returns"] = underlying["Close"].pct_change()
+    underlying["Portfolio Daily Returns"] = signals_df["Returns"]
+
     # in case of error:
     # underlying["Portfolio Daily Returns"].fillna(0, inplace=True)
     underlying["Portfolio Daily Returns"].fillna(0)
@@ -193,7 +190,6 @@ def trade_evaluation(signals_df):
 
     Perform a quantitative analysis of the algorithm performance
     and generates a trade evaluation DataFrame.
-
     output: dataframe.
     """
     # initialize dataframe
@@ -257,10 +253,9 @@ def trade_evaluation(signals_df):
 
 # Define function that plots Algo Cumulative Returns vs. Underlying Cumulative Returns:
 def underlying_returns(signals_df):
-    """Generates a graph of the algo cumulative returns vs.
+    """Generates a graph of the algo cumulative returns.
 
-    the underlying asset cumulative returns.
-
+    vs.the underlying asset cumulative returns.
     input: dataframe.
     output: dataframe.
     """
