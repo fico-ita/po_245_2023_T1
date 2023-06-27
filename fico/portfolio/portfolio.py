@@ -20,6 +20,9 @@ split_data:
     Splitting the data into train and test.
 """
 # Importing libraries:
+
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -29,7 +32,6 @@ def build_factors_frame():
     """Creating a dataframe with all factors. Concatenating all factors.
 
     Date is the index.
-
     Creating a csv file with all factors.
     return: factors dataframe.
     """
@@ -68,7 +70,6 @@ def pre_processing(raw_factor):
     """Steps made before the data is ready to be consumed.
 
     No calculation or transformation is made.
-
     input: dataframe
     output:dateframe.
     """
@@ -100,12 +101,20 @@ def choose_stock(ticker):
     'tipo': Type (PN, ON, etc),
     'quant_em_aluguel': Number of shares in short position,
     'vol_em_aluguel(mm_r$)': Volume in millions of R$ in short position,
-
     output:dataframe.
     """
+    file_path = f"../data/stocks/{ticker}.csv"
+    # verifu if file_path exists:
+    file_path = Path(file_path)
+    if file_path.exists():
+        stock = pd.read_csv(file_path, index_col=None)
+    else:
+        print("File not found")
+        return pd.DataFrame()
+
     stock = pd.read_csv(f"../data/stocks/{ticker}.csv", index_col=None)
     # Convert datetime column to desired format
-    print(stock.columns)
+    # print(stock.columns)
     stock = stock.rename(columns={"data": "date"})
     stock["date"] = pd.to_datetime(stock["date"], format="%d/%m/%Y")
     stock["date"] = stock["date"].dt.strftime("%Y/%m/%d")
@@ -170,17 +179,6 @@ def merge_portifolio(portfolio, factors):
     return combined_df
 
 
-def portfolio_build():
-    """Future work.
-
-    Build a portfolio based on the stocks that are in the
-    IBOV index.
-
-    input:None
-    output:None
-    """
-
-
 def split_data(data, rate=0.8):
     """input: dataframe, float.
 
@@ -200,3 +198,153 @@ def split_data(data, rate=0.8):
     y_test = y[split:]
     close_test = data["Close"][split:]
     return x_train, x_test, y_train, y_test, close_test
+
+
+class Portifolio:
+    """Class to handle the portfolio.
+
+    build different portfolios based on different factors.
+    """
+
+    def __init__(self, dataframe):
+        """Initialize the portfolio class.
+
+        Dataframe is gattered from the api_comdinheiro functions.
+        """
+        # check if column names are correct:
+        # columns need to be: ['ticker', 'nome_da_empresa', 'data_da_analise',
+        #  'patrimonio_liquido','quant_on_pn','ebit12_meses', 'preco_de_fechamento',
+        # 'ativo_total','fator_cotacao', 'retorno12_meses', 'retorno6_meses',
+        # 'retorno3_meses','retorno1_mes', 'lc', 'volatilidade_anualizada12_meses',
+        # 'volatilidade_anualizada6_meses','volatilidade_anualizada3_meses',
+        # 'volatilidade_anualizada1_mes', 'ev', 'valor_de_mercado']
+        self.frame = dataframe
+
+    def pre_processing(self):
+        """Preprocess the frame to enable the analysis.
+
+        change the columns types and names.
+        also fill the missing values with 0
+
+        """
+        self.frame["data_da_analise"] = pd.to_datetime(self.frame["data_da_analise"])
+        self.frame["ticker"] = self.frame["ticker"].astype(str)
+        # renomear as colunas:
+        self.frame = self.frame.rename(
+            columns={
+                "data_da_analise": "date",
+                "patrimonio_liquido": "net_worth",
+                "quant_on_pn": "qnt",
+                "retorno12_meses": "ret12m",
+                "retorno6_meses": "ret6m",
+                "retorno3_meses": "ret3m",
+                "retorno1_mes": "ret1m",
+                "ebit12_meses": "ebit12m",
+                "nome_da_empresa": "name",
+                "volatilidade_anualizada12_meses": "vol12m",
+                "volatilidade_anualizada6_meses": "vol6m",
+                "volatilidade_anualizada3_meses": "vol3m",
+                "volatilidade_anualizada1_mes": "vol1m",
+                "valor_de_mercado": "mkt_value",
+                "lc": "liq_corr",
+                "ev": "entreprise_value",
+                "preco_de_fechamento": "closed_price",
+            },
+        )
+
+        # transforma valores [] em NaN:
+        self.frame = self.frame.replace("[]", np.nan)
+        # Remove commas from numeric columns and convert them to numeric values
+        self.numeric_columns = [
+            "net_worth",
+            "qnt",
+            "ret12m",
+            "ret6m",
+            "ret3m",
+            "ret1m",
+            "closed_price",
+            "ebit12m",
+            "fator_cotacao",
+            "ativo_total",
+            "vol12m",
+            "vol6m",
+            "vol3m",
+            "vol1m",
+            "mkt_value",
+            "liq_corr",
+            "entreprise_value",
+        ]
+        for column in self.numeric_columns:
+            if self.frame[column].dtype == "object":
+                self.frame[column] = (
+                    self.frame[column].str.replace(",", ".").astype(float)
+                )
+        # replace NaNs with 0:
+        # remover 'date' = 2005-12-29 'ticker': 'ARCE3' -> due to outlier from data
+        # provider:
+        self.frame = self.frame.loc[
+            ~((self.frame["date"] == "2005-12-29") & (self.frame["ticker"] == "ARCE3"))
+        ]
+        self.frame = self.frame.loc[
+            ~((self.frame["date"] == "2004-12-30") & (self.frame["ticker"] == "ACES4"))
+        ]
+        self.frame = self.frame.fillna(0)
+        return self.frame
+
+    def build_momentum_portfolio(self):
+        """Momentum portfolio.
+
+        Generate a momentum portfolio based on the 8 stocks with the highest returns
+        in the last 12 months.
+
+        Returns a dataframe of returns, with all stocks equally weighted.
+        """
+        self.momentum = (
+            self.frame.groupby("date")
+            .apply(lambda x: x.nlargest(8, "ret12m"))
+            .reset_index(drop=True)
+        )
+        return (
+            self.momentum.groupby("date")["closed_price"].mean().reset_index(drop=True)
+        )
+
+    def build_size_portfolio(self):
+        """Small and big portfolio.
+
+        Generate a size portfolio based on the 8 stocks with the highest market
+        cap in the last 12 months.
+
+        Returns a dataframe
+        """
+        self.size_big = (
+            self.frame.groupby("date")
+            .apply(lambda x: x.nlargest(8, "VM"))
+            .reset_index(drop=True)
+        )
+        self.size_small = (
+            self.frame.groupby("date")
+            .apply(lambda x: x.nsmallest(8, "VM"))
+            .reset_index(drop=True)
+        )
+
+        return (
+            self.size_small.groupby("date")["closed_price"]
+            .mean()
+            .reset_index(drop=True)
+        )
+
+    def build_value_portfolio(self):
+        """book-to-market portfolio.
+
+        Generate a book-to-market portfolio based on the 8 stocks with the highest
+        book-to-market in the last 12 months.
+
+        Returns a dataframe grouped by date, with all stocks equally weighted.
+        """
+        self.frame["B/M"] = self.frame["VM"] / self.frame["PL"]
+        self.value = (
+            self.frame.groupby("date")
+            .apply(lambda x: x.nsmallest(8, "B/M"))
+            .reset_index(drop=True)
+        )
+        return self.value.groupby("date")["closed_price"].mean().reset_index(drop=True)

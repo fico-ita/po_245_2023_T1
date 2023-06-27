@@ -12,4 +12,4 @@ Expand this section by considering the following points:
 - Avoid any distractions
 
 !!! warning
-    Faça ao menos 1 tutorial com jupyter notebook.
+Faça ao menos 1 tutorial com jupyter notebook.

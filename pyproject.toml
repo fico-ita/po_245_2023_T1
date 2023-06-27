@@ -2,12 +2,15 @@
 name = "fico"
 version = "0.1.0"
 description = "Projeto teste do FICO"
-authors = ["curtis <curtis@ita.br>"]
+authors = ["curtis <curtis@ita.br>","fernando <fernandofgz@ita.br>"]
 license = "ITA"
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
+numpy = "^1.24.3"
+seaborn = "^0.12.2"
+pandas = "^2.0.2"
 
 [tool.poetry.group.dev.dependencies]
 mkdocs = "^1.4.2"
@@ -17,6 +20,9 @@ pre-commit = "^3.2.2"
 black = "^23.3.0"
 ruff = "^0.0.262"
 nbqa = "^1.7.0"
+pandas = "^2.0.2"
+numpy = "^1.24.3"
+seaborn = "^0.12.2"
 
 [tool.black]
 target-version = ["py311"]
