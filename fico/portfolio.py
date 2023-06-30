@@ -2,22 +2,31 @@
 
 Functions:
 ---------
+
 build_factors_frame:
     Creating a dataframe with all factors. Concatenating all factors.
+
 pre_processing:
     Pre-processing the Factors dataframe.
+
 choose_stock:
     Choosing the stock to be evaluated.
+
 process_stock:
     Processing the stock to be evaluated.
+
 analyse_stock:
     Analysing the stock to be evaluated.
+
 merge_portifolio:
     Merging the portfolio with the stock to be evaluated.
+
 portfolio_build:
     Building the portfolio.
+
 split_data:
     Splitting the data into train and test.
+
 """
 # Importing libraries:
 
@@ -32,7 +41,9 @@ def build_factors_frame():
     """Creating a dataframe with all factors. Concatenating all factors.
 
     Date is the index.
+
     Creating a csv file with all factors.
+
     return: factors dataframe.
     """
     # Rm - Market Factor
@@ -84,24 +95,38 @@ def pre_processing(raw_factor):
 
 
 def choose_stock(ticker):
-    """input:str,str.
+    """Read and store ticker information.
 
-    read and store ticker information.
     'data': Date in format: 'dd/mm/yyyy',
+
     'fech_ajustado': Close price adjusted for splits and dividends,
+
     'variacao(pct)': Daily return in percentage,
+
     'fech_historico': Close price without adjustments,
+
     'abertura_ajustado': Open price adjusted for splits and dividends,
+
     'min_ajustado': Low price adjusted for splits and dividends,
+
     'medio_ajustado': Average price adjusted for splits and dividends,
+
     'max_ajustado': High price adjusted for splits and dividends,
+
     'vol_(mm_r$)': Volume in millions of R$,
+
     'negocios': Number of trades,
+
     'fator': Factor,
+
     'tipo': Type (PN, ON, etc),
+
     'quant_em_aluguel': Number of shares in short position,
+
     'vol_em_aluguel(mm_r$)': Volume in millions of R$ in short position,
+
     output:dataframe.
+
     """
     file_path = f"../data/stocks/{ticker}.csv"
     # verifu if file_path exists:
@@ -171,6 +196,7 @@ def merge_portifolio(portfolio, factors):
 
     Generate a single portfolio that contains all Factors columns
     in addiction to the portfolio value weighted returns
+
     output: dataframe.
     """
     combined_df = pd.concat([factors, portfolio], axis="columns", join="inner")
