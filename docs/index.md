@@ -47,7 +47,7 @@ Para citar este projeto, utilize a seguinte referência:
 ### BibTeX
 
 ```bibtex
-@misc{lima2023finance,
+@misc{Zanchitta2023finance,
     author = {Zanchitta,F. G.},
     title = {Implementação do Modelo Fama e French 5 fatores aplicado ao Mercado de ações brasileiro},
     year = {2023},
