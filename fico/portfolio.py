@@ -84,24 +84,38 @@ def pre_processing(raw_factor):
 
 
 def choose_stock(ticker):
-    """input:str,str.
+    """Read and store ticker information.
 
-    read and store ticker information.
     'data': Date in format: 'dd/mm/yyyy',
+
     'fech_ajustado': Close price adjusted for splits and dividends,
+
     'variacao(pct)': Daily return in percentage,
+
     'fech_historico': Close price without adjustments,
+
     'abertura_ajustado': Open price adjusted for splits and dividends,
+
     'min_ajustado': Low price adjusted for splits and dividends,
+
     'medio_ajustado': Average price adjusted for splits and dividends,
+
     'max_ajustado': High price adjusted for splits and dividends,
+
     'vol_(mm_r$)': Volume in millions of R$,
+
     'negocios': Number of trades,
+
     'fator': Factor,
+
     'tipo': Type (PN, ON, etc),
+
     'quant_em_aluguel': Number of shares in short position,
+
     'vol_em_aluguel(mm_r$)': Volume in millions of R$ in short position,
+
     output:dataframe.
+
     """
     file_path = f"../data/stocks/{ticker}.csv"
     # verifu if file_path exists:
