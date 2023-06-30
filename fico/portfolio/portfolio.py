@@ -153,6 +153,7 @@ def process_stock(frame):
     # Renaming to Close and Returns:
     frame = frame.rename(columns={"fech_ajustado": "Close", "variacao(pct)": "Returns"})
     # dropna:
+    frame.Returns = frame.Returns / 100
     frame = frame.dropna()
     return frame
 

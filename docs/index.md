@@ -4,10 +4,10 @@ Leia a documentação do Mkdocs em [mkdocs.org](https://www.mkdocs.org).
 
 ## Comandos
 
-* `mkdocs new [dir-name]` - Cria um novo projeto.
-* `mkdocs serve` - Inicia o servidor live-reloading de documentação.
-* `mkdocs build` - Constrói o site da documentação.
-* `mkdocs -h` - Imprime a mensagem de ajuda.
+- `mkdocs new [dir-name]` - Cria um novo projeto.
+- `mkdocs serve` - Inicia o servidor live-reloading de documentação.
+- `mkdocs build` - Constrói o site da documentação.
+- `mkdocs -h` - Imprime a mensagem de ajuda.
 
 ## Estrutura da documentação
 
@@ -27,7 +27,7 @@ Para a organização da documentação de usuário, baseie-se na proposta de
 1. Explanation
 
 !!! warning
-    Não é obrigatório seguir Diátaxis. Ela serve apenas como guia.
+Não é obrigatório seguir Diátaxis. Ela serve apenas como guia.
 
 As documentações acima são pensadas para o leitor usuário da solução.
 
@@ -35,8 +35,8 @@ Deve-se ainda considerar a documentação para fins acadêmicos e de engenharia 
 software, i.e., quando quem desenvolve o projeto é o leitor. Caso contrário,
 atualizações podem se tornar impraticáveis.
 
-Esta documentação possui grande intersecção com *Explanation*. A diferença é que o
-público de *Explanation* é o usuário da solução, enquanto na documentação acadêmica e
+Esta documentação possui grande intersecção com _Explanation_. A diferença é que o
+público de _Explanation_ é o usuário da solução, enquanto na documentação acadêmica e
 para desenvolvimento o público alvo são os desenvolvedores e arquitetos da solução.
 
 Nesta documentação o foco é destacar as tomadas de decisão e organização da solução,
@@ -44,7 +44,7 @@ preferencialmente apesentando um diagrama de componentes da solução e como ele
 interagem. Em nossa disciplina, iremos incluir o artigo como forma de atingir estes
 objetivos.
 
-## Calculadora FICO
+## pacotes FICO
 
 ::: fico
 
