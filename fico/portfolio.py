@@ -316,6 +316,8 @@ class Portifolio:
             ~((self.frame["date"] == "2004-12-30") & (self.frame["ticker"] == "ACES4"))
         ]
         self.frame = self.frame.fillna(0)
+        # outliers:
+        self.frame = self.frame.drop(index=[1151, 963, 964, 990, 579, 883, 868, 274])
         return self.frame
 
     def build_momentum_portfolio(self):
