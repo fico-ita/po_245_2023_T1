@@ -3,19 +3,31 @@
 functions:
 ---------
 
-generate_signals
+generate_signals:
+
 Generating signals dataframe, Where it simulates a portfolio with
 an arbitrary start capital and a fixed number of shares traded each operation.
-algo_evaluation:
+
+
+*algo_evaluation*:
+
 Perform a quantitative analysis of the algorithm performance.
-underlying_evaluation:
+
+*underlying_evaluation*:
+
 Perform a quantitative analysis of the underlying performance.
+
 algo_vs_underlying:
+
 Perform a quantitative analysis of the algorithm performance
 versus the underlying performance.
+
 trade_evaluation:
+
 Perform a quantitative analysis of the trades.
+
 underlying_returns:
+
 Perform a quantitative analysis of the underlying returns.
 """
 import numpy as np
