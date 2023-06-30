@@ -1,6 +1,4 @@
-"""Realiza cálculos matemáticos com funções próprias.
+"""Portfolio package.
 
-Módulos exportados por este pacote:
-
-- `calculations`: Provê várias operações matemáticas
+- Build, preprocess, and evaluate a financial portfolio
 """

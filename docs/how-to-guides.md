@@ -3,37 +3,53 @@ This part of the project documentation focuses on a
 tasks that you might have, with the help of the code
 provided in this project.
 
-## How To Add Two Numbers?
+## Passos iniciais
 
-You have two numbers and you need to add them together.
-You're in luck! The `calculator` package can help you
-get this done.
+Para utilizar os módulos implementados o _FICO_ siga as etapas abaixo:
 
-Download the code from this GitHub repository and place
-the `calculator/` folder in the same directory as your
-Python script:
+### Instalação
 
-    your_project/
-    │
-    ├── calculator/
-    │   ├── __init__.py
-    │   └── calculations.py
-    │
-    └── your_script.py
+```bash
+poetry add git+https://github.com/fico-ita/po_245_2023_T1.git
+```
 
-Inside of `your_script.py` you can now import the
-`add()` function from the `calculator.calculations`
-module:
+### Uso
 
-    # your_script.py
-    from calculator.calculations import add
+Os pacotes implementados podem ser importados da forma:
 
-After you've imported the function, you can use it to add any two numbers that you need
-to add:
+```python
+>>> from fico.portfolio import choose_stock, process_stock
+>>> from fico.evaluation import *
+```
 
-    # your_script.py
-    from calculator.calculations import add
+## Como Calcular o retorno anual médio por tamanho de empresa:
 
-    print(add(20, 22))  # OUTPUT: 42.0
+```python
+import pandas as pd
+import seaborn as sns
+from fico.evaluation import *
+from fico.portfolio import *
 
-You're now able to add any two numbers, and you'll always get a `float` as a result.
+universe = pd.read_csv("../data/ibov_universe.csv", index_col=None)
+
+
+universe = Portifolio(universe)
+data = universe.pre_processing()
+numeric_columns = universe.numeric_columns
+data["size"] = (
+    data.groupby("date")["mkt_value"]
+    .apply(lambda x: (x > x.median()))
+    .reset_index(drop=True)
+    .replace({True: "Large", False: "Small"})
+)
+data["year"] = data["date"].dt.year
+
+return_by_size = data.groupby(["year", "size"])["ret12m"].mean().reset_index()
+
+ax = sns.barplot(x="year", y="ret12m", hue="size", data=return_by_size)
+ax.set(xlabel="", ylabel="Average return")
+ax.set_xticklabels(ax.get_xticklabels(), rotation=40, ha="right")
+plt.show()
+```
+
+![retorno_12m_por_tamanho](materials/exemplo_tutorial.png)
