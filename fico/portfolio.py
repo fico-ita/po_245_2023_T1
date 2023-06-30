@@ -2,22 +2,31 @@
 
 Functions:
 ---------
+
 build_factors_frame:
     Creating a dataframe with all factors. Concatenating all factors.
+
 pre_processing:
     Pre-processing the Factors dataframe.
+
 choose_stock:
     Choosing the stock to be evaluated.
+
 process_stock:
     Processing the stock to be evaluated.
+
 analyse_stock:
     Analysing the stock to be evaluated.
+
 merge_portifolio:
     Merging the portfolio with the stock to be evaluated.
+
 portfolio_build:
     Building the portfolio.
+
 split_data:
     Splitting the data into train and test.
+
 """
 # Importing libraries:
 
@@ -32,7 +41,9 @@ def build_factors_frame():
     """Creating a dataframe with all factors. Concatenating all factors.
 
     Date is the index.
+
     Creating a csv file with all factors.
+
     return: factors dataframe.
     """
     # Rm - Market Factor
@@ -185,6 +196,7 @@ def merge_portifolio(portfolio, factors):
 
     Generate a single portfolio that contains all Factors columns
     in addiction to the portfolio value weighted returns
+
     output: dataframe.
     """
     combined_df = pd.concat([factors, portfolio], axis="columns", join="inner")

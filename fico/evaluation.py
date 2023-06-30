@@ -40,6 +40,7 @@ def generate_signals(input_df, start_capital=100000, share_count=2000):
 
     Generating signals dataframe, Where it simulates a portfolio with
     an arbitrary start capital and a fixed number of shares traded each operation.
+
     output: dataframe.
     """
     # Set initial capital:
@@ -95,6 +96,7 @@ def algo_evaluation(signals_df):
     """input: dataframe.
 
     Perform a quantitative analysis of the algorithm performance.
+
     output: dataframe.
     """
     # Prepare dataframe for metrics
@@ -151,6 +153,7 @@ def underlying_evaluation(signals_df):
     """input: dataframe.
 
     Perform a quantitative analysis of the underlying asset performance.
+
     output: dataframe.
     """
     underlying = pd.DataFrame()
@@ -174,6 +177,7 @@ def algo_vs_underlying(signals_df):
     """Compares the algo evaluation to the underlying asset evaluation.
 
     input: dataframe.
+
     output: dataframe.
     """
     metrics = [
@@ -268,7 +272,9 @@ def underlying_returns(signals_df):
     """Generates a graph of the algo cumulative returns.
 
     vs.the underlying asset cumulative returns.
+
     input: dataframe.
+
     output: dataframe.
     """
     underlying = pd.DataFrame()
