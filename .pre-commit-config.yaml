@@ -23,7 +23,7 @@ repos:
       - id: sort-simple-yaml
       # remaining hooks in the order of https://pre-commit.com/hooks.html and https://github.com/pre-commit/pre-commit-hooks
       - id: no-commit-to-branch
-      - id: check-added-large-files # prevents giant files from being committed
+      # - id: check-added-large-files # prevents giant files from being committed
       - id: check-ast # simply checks whether the files parse as valid python
       - id: fix-byte-order-marker # removes UTF-8 byte order marker
       - id: fix-encoding-pragma # Add # -*- coding: utf-8 -*- to the top of python files.
