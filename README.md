@@ -34,7 +34,11 @@ Python 3.11 or higher is required. The project requires the following packages:
 
 
 ## Documentation
-
+To make proper usage of the MKDocs, run these commands:
+```bash
+poetry shell
+mkdocs serve
+```
 The documentation is available on [GitHub](
     http://127.0.0.1:8000/
     )
